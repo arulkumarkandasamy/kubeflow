@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: jupyter-web-app-deployment
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - jupyter-web-app-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-jupyter-web-app-deployment
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: jupyter-web-app-deployment
+  subjects:
+  - user: '*'

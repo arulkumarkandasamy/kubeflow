@@ -1,0 +1,26 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: argo-ui
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - argo-ui.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  labels:
+    app: argo-ui
+    app.kubernetes.io/component: argo
+    app.kubernetes.io/name: argo
+    kustomize.component: argo
+  name: bind-argo-ui
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: argo-ui
+  subjects:
+  - user: '*'

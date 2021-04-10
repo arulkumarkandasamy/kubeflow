@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: kfserving-controller-manager-metrics
+  namespace: kubeflow
+spec:
+  rules:
+    - services:
+        - kfserving-controller-manager-metrics-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-kfserving-controller-manager-metrics
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: kfserving-controller-manager-metrics
+  subjects:
+    - user: '*'

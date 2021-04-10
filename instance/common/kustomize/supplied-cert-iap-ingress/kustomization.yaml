@@ -1,0 +1,71 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: istio-system
+commonLabels:
+  kustomize.component: iap-ingress
+resources:
+  - ../../upstream/gcp/iap-ingress/base/backend-config.yaml
+  - ../../upstream/gcp/iap-ingress/base/cluster-role-binding.yaml
+  - ../../upstream/gcp/iap-ingress/base/cluster-role.yaml
+  - ./ingress.yaml
+  - ../../upstream/gcp/iap-ingress/base/service-account.yaml
+  - ../../upstream/gcp/iap-ingress/overlays/application/application.yaml
+  - ./config/parameters.yaml
+  - ./service-account.yaml
+patchesStrategicMerge:
+  - ./patches/backend-config-patch.yaml
+vars:
+  - name: hostname
+    objref:
+      kind: ConfigMap
+      name: parameters
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.hostname
+  - name: ipName
+    objref:
+      kind: ConfigMap
+      name: parameters
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.ipName
+  - name: ingressName
+    objref:
+      kind: ConfigMap
+      name: parameters
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.ingressName
+  - name: oauthSecretName
+    objref:
+      kind: ConfigMap
+      name: parameters
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.oauthSecretName
+  - name: tlsSecretName
+    objref:
+      kind: ConfigMap
+      name: parameters
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.tlsSecretName
+  - name: istioNamespace
+    objref:
+      kind: ConfigMap
+      name: parameters
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.istioNamespace
+configurations:
+  - ../../upstream/gcp/iap-ingress/base/params.yaml
+images:
+- name: gcr.io/kubeflow-images-public/envoy
+  newName: gcr.io/kubeflow-images-public/envoy
+  newTag: v20180309-0fb4886b463698702b6a08955045731903a18738
+- name: gcr.io/kubeflow-images-public/ingress-setup
+  newName: gcr.io/kubeflow-images-public/ingress-setup
+  newTag: latest
+- name: gcr.io/cloud-solutions-group/esp-sample-app
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/cloud-solutions-group/esp-sample-app
+  newTag: 1.0.0

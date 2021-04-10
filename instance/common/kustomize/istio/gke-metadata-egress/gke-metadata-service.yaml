@@ -1,0 +1,67 @@
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: egressgateway-for-gke-metadata
+#spec:
+#  host: istio-egressgateway.istio-system.svc.cluster.local
+#  subsets:
+#  - name: gke-metadata
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: gke-metadata
+#spec:
+#  host: metadata.google.internal
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: VirtualService
+#metadata:
+#  name: direct-gke-metadata-through-egress-gateway
+#spec:
+#  hosts:
+#  - metadata.google.internal
+#  gateways:
+#  - mesh
+#  - istio-system/istio-egressgateway
+#  http:
+#  - match:
+#    - gateways:
+#      - mesh
+#      destinationSubnets:
+#      - 169.254.169.254/32
+#      port: 80
+#    route:
+#    - destination:
+#        host: istio-egressgateway.istio-system.svc.cluster.local
+#        subset: gke-metadata
+#        port:
+#          number: 80
+#  - match:
+#    - gateways:
+#      - istio-system/istio-egressgateway
+#      port: 80
+#    route:
+#    - destination:
+#        host: metadata.google.internal
+#        port:
+#          number: 80
+#      weight: 100
+#---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: gke-metadata
+spec:
+  hosts:
+  - metadata.google.internal
+  addresses:
+  - 169.254.169.254
+  ports:
+  - name: http
+    number: 80
+    protocol: HTTP
+  resolution: STATIC
+  location: MESH_EXTERNAL
+  endpoints:
+  - address: 169.254.169.254

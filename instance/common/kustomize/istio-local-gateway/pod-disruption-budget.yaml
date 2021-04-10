@@ -1,0 +1,18 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: cluster-local-gateway
+  labels:
+    app: cluster-local-gateway
+    istio: cluster-local-gateway
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: cluster-local-gateway
+      istio: cluster-local-gateway
+      chart: gateways
+      heritage: Tiller
+      release: istio
+      service.istio.io/canonical-name: cluster-local-gateway
+      service.istio.io/canonical-revision: "1.5"

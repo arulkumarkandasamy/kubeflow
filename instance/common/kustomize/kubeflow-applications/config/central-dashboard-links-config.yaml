@@ -1,0 +1,84 @@
+apiVersion: v1
+data:
+  links: |-
+    {
+      "menuLinks": [
+        {
+          "link": "/pipeline/",
+          "text": "Pipelines"
+        },
+        {
+          "link": "/jupyter/",
+          "text": "Notebook Servers"
+        },
+        {
+          "link": "/katib/",
+          "text": "Katib"
+        }
+      ],
+      "externalLinks": [
+        {
+          "link": "https://beta-apps.neuron.bdp.vodafone.com/dgc",
+          "text": "Neuron Collibra"
+        },
+        {
+          "link": "https://beta-apps.neuron.bdp.vodafone.com/jenkins",
+          "text": "Neuron Jenkins"
+        },
+        {
+          "link": "https://monitoring.infdev-lab.aa.vodafone.com/grafana",
+          "text": "Grafana"
+        },
+        {
+          "link": "https://beta-apps.neuron.bdp.vodafone.com/nexus",
+          "text": "Neuron Artifact Store"
+         }
+      ],
+      "quickLinks": [
+        {
+          "text": "Upload a pipeline",
+          "desc": "Pipelines",
+          "link": "/pipeline/"
+        },
+        {
+          "text": "View all pipeline runs",
+          "desc": "Pipelines",
+          "link": "/pipeline/#/runs"
+        },
+        {
+          "text": "Create a new Notebook server",
+          "desc": "Notebook Servers",
+          "link": "/jupyter/new?namespace=kubeflow"
+        },
+        {
+          "text": "View Katib Experiments",
+          "desc": "Katib",
+          "link": "/katib/"
+        },
+        {
+          "text": "View Metadata Artifacts",
+          "desc": "Artifact Store",
+          "link": "/metadata/"
+        }
+      ],
+      "documentationItems": [
+        {
+          "text": "Getting Started with Kubeflow",
+          "desc": "Get your machine-learning workflow up and running on Kubeflow",
+          "link": "https://www.kubeflow.org/docs/started/getting-started/"
+        },
+        {
+          "text": "Kubeflow Pipeline Documentation",
+          "desc": "Kubeflow pipeline docs",
+          "link": "https://www.kubeflow.org/docs/pipelines/pipelines-quickstart/"
+        },
+        {
+          "text": "Vodafone Kubeflow Documentation",
+          "desc": "Vodafone Kubeflow Documentation",
+          "link": "https://github.vodafone.com/VFGroup-NextGenBI/kubeflow_demo"
+        }
+      ]
+    }
+kind: ConfigMap
+metadata:
+  name: centraldashboard-links-config

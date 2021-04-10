@@ -1,0 +1,12 @@
+apiVersion: kubeflow.org/v1beta1
+kind: Profile
+metadata:
+  name: harry-cai
+spec:
+  owner:
+    kind: User
+    name: harry.cai@vodafone.com
+  plugins:
+    - kind: WorkloadIdentity
+      spec:
+        gcpServiceAccount: kf-test@PROJECT.iam.gserviceaccount.com

@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: metadata-envoy-deployment
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - metadata-envoy-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-metadata-envoy-deployment
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: metadata-envoy-deployment
+  subjects:
+  - user: '*'

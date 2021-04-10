@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/component: profiles
+  app.kubernetes.io/name: profiles
+  kustomize.component: profiles
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+resources:
+- ./connor-wilkes
+- ./harry-cai

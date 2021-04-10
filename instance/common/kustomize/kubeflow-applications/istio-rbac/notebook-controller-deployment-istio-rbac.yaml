@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: notebook-controller-deployment
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - notebook-controller-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-notebook-controller-deployment
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: notebook-controller-deployment
+  subjects:
+  - user: '*'

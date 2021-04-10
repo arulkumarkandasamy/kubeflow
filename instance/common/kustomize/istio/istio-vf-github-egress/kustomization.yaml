@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: istio-system
+commonLabels:
+  app.kubernetes.io/component: vf-github-egress
+  app.kubernetes.io/name: vf-github-egress
+  kustomize.component: vf-github-egress
+resources:
+- github.yaml

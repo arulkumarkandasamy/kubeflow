@@ -1,0 +1,92 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: kubeflow
+packageMetadata:
+  shortDescription: Kubeflow deployment
+openAPI:
+  definitions:
+    io.k8s.cli.setters.hostname:
+      x-k8s-cli:
+        setter:
+          name: hostname
+          value: "HOSTNAME"
+          isSet: true
+    io.k8s.cli.setters.IPName:
+      x-k8s-cli:
+        setter:
+          name: IPName
+          value: "kubeflow-ip"
+          isSet: true
+    io.k8s.cli.setters.project:
+      x-k8s-cli:
+        setter:
+          name: project
+          value: PROJECT
+          isSet: true
+    io.k8s.cli.setters.pipelineGCSBucketName:
+      x-k8s-cli:
+        setter:
+          name: pipelineGCSBucketName
+          value: "PROJECT-kf-pipeline-store"
+          isSet: true
+    io.k8s.cli.setters.databasePort:
+      x-k8s-cli:
+        setter:
+          name: databasePort
+          value: "3306"
+          isSet: true
+    io.k8s.cli.setters.kubeflowName:
+      x-k8s-cli:
+        setter:
+          name: kubeflowName
+          value: "KUBEFLOWNAME"
+          isSet: true
+    io.k8s.cli.substitutions.kf-pipeline-client-sa:
+      x-k8s-cli:
+        substitution:
+          name: kf-pipeline-client-sa
+          pattern: kf-pipeline-client@${project}.iam.gserviceaccount.com
+          values:
+          - marker: ${project}
+            ref: '#/definitions/io.k8s.cli.setters.project'
+    io.k8s.cli.substitutions.kf-pipeline-minio-client:
+      x-k8s-cli:
+        substitution:
+          name: kf-pipeline-minio-client
+          pattern: kf-pipeline-minio-client@${project}.iam.gserviceaccount.com
+          values:
+          - marker: ${project}
+            ref: '#/definitions/io.k8s.cli.setters.project'
+    io.k8s.cli.substitutions.kf-iap-enabler-sa:
+      x-k8s-cli:
+        substitution:
+          name: kf-iap-enabler-sa
+          pattern: kf-iap-enabler@${project}.iam.gserviceaccount.com
+          values:
+          - marker: ${project}
+            ref: '#/definitions/io.k8s.cli.setters.project'
+    io.k8s.cli.substitutions.profile-controller-sa:
+      x-k8s-cli:
+        substitution:
+          name: profile-controller-sa
+          pattern: kubeflow-profile-controller@${project}.iam.gserviceaccount.com
+          values:
+          - marker: ${project}
+            ref: '#/definitions/io.k8s.cli.setters.project'
+    io.k8s.cli.substitutions.mysqlDNS:
+      x-k8s-cli:
+        substitution:
+          name: mysql-dns
+          pattern: ${kubeflowName}-mysql.${project}.internal
+          values:
+          - marker: ${project}
+            ref: '#/definitions/io.k8s.cli.setters.project'
+          - marker: ${kubeflowName}
+            ref: '#/definitions/io.k8s.cli.setters.kubeflowName'
+    io.k8s.cli.setters.kfAdmin:
+      x-k8s-cli:
+        setter:
+          name: kfAdmin
+          value: KFADMIN
+          isSet: true

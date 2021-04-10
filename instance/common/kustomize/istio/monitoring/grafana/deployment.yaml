@@ -1,0 +1,187 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana
+    release: istio
+  name: grafana
+  namespace: istio-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: grafana
+        chart: grafana
+        heritage: Tiller
+        release: istio-system
+    spec:
+      serviceAccountName: grafana-service-account
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: beta.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
+              weight: 2
+            - preference:
+                matchExpressions:
+                  - key: beta.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - ppc64le
+              weight: 2
+            - preference:
+                matchExpressions:
+                  - key: beta.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - s390x
+              weight: 2
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: beta.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
+                      - ppc64le
+                      - s390x
+      containers:
+        - env:
+            - name: GRAFANA_PORT
+              value: "3000"
+            - name: GF_AUTH_GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kubeflow-oauth
+                  key: client_secret
+            - name: GF_AUTH_GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: kubeflow-oauth
+                  key: client_id
+            - name: HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: hostname
+                  name: monitoring-config
+            - name: GF_SERVER_ROOT_URL
+              value: "https://monitoring.$(HOSTNAME)/grafana/"
+            - name: GF_SERVER_DOMAIN
+              value: "monitoring.$(HOSTNAME)"
+            - name: GF_DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: mysqlDNS
+                  name: mysql-params
+            - name: GF_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-database-config
+                  key: password
+            - name: GF_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-database-config
+                  key: username
+          image: grafana/grafana:6.7.4
+          imagePullPolicy: Always
+          name: grafana
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+          resources:
+            requests:
+              cpu: 10m
+          volumeMounts:
+            - mountPath: /etc/grafana/grafana.ini
+              name: grafana-config
+              subPath: grafana.ini
+            - mountPath: /data/grafana
+              name: data
+            - mountPath: /var/lib/grafana/dashboards/istio/citadel-dashboard.json
+              name: dashboards-istio-citadel-dashboard
+              readOnly: true
+              subPath: citadel-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/galley-dashboard.json
+              name: dashboards-istio-galley-dashboard
+              readOnly: true
+              subPath: galley-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/istio-mesh-dashboard.json
+              name: dashboards-istio-istio-mesh-dashboard
+              readOnly: true
+              subPath: istio-mesh-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/istio-performance-dashboard.json
+              name: dashboards-istio-istio-performance-dashboard
+              readOnly: true
+              subPath: istio-performance-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/istio-service-dashboard.json
+              name: dashboards-istio-istio-service-dashboard
+              readOnly: true
+              subPath: istio-service-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/istio-workload-dashboard.json
+              name: dashboards-istio-istio-workload-dashboard
+              readOnly: true
+              subPath: istio-workload-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/mixer-dashboard.json
+              name: dashboards-istio-mixer-dashboard
+              readOnly: true
+              subPath: mixer-dashboard.json
+            - mountPath: /var/lib/grafana/dashboards/istio/pilot-dashboard.json
+              name: dashboards-istio-pilot-dashboard
+              readOnly: true
+              subPath: pilot-dashboard.json
+            - mountPath: /etc/grafana/provisioning/datasources/datasources.yaml
+              name: config
+              subPath: datasources.yaml
+            - mountPath: /etc/grafana/provisioning/dashboards/dashboardproviders.yaml
+              name: config
+              subPath: dashboardproviders.yaml
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
+      volumes:
+        - configMap:
+            name: grafana-config
+          name: grafana-config
+        - configMap:
+            name: istio-grafana
+          name: config
+        - emptyDir: {}
+          name: data
+        - configMap:
+            name: istio-grafana-configuration-dashboards-citadel-dashboard
+          name: dashboards-istio-citadel-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-galley-dashboard
+          name: dashboards-istio-galley-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-istio-mesh-dashboard
+          name: dashboards-istio-istio-mesh-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-istio-performance-dashboard
+          name: dashboards-istio-istio-performance-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-istio-service-dashboard
+          name: dashboards-istio-istio-service-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-istio-workload-dashboard
+          name: dashboards-istio-istio-workload-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-mixer-dashboard
+          name: dashboards-istio-mixer-dashboard
+        - configMap:
+            name: istio-grafana-configuration-dashboards-pilot-dashboard
+          name: dashboards-istio-pilot-dashboard

@@ -1,0 +1,7 @@
+hostname: "infdev-nonlive.aa.vodafone.com"
+IPName: "kubeflow-ip"
+project: "vf-infdev-ca-nonlive"
+pipelineGCSBucketName: "vf-infdev-ca-nonlive-kf-pipeline-store"
+databasePort: "3306"
+kubeflowName: "infdev-nonlive-kf"
+kfAdmin: "connor.wilkes"

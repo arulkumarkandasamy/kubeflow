@@ -1,0 +1,13 @@
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: grafana-ports-mtls-disabled
+  namespace: istio-system
+  labels:
+    app: grafana
+    release: istio
+spec:
+  targets:
+    - name: grafana
+      ports:
+        - number: 3000

@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: katib-controller
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - katib-controller.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-katib-controller
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: katib-controller
+  subjects:
+  - user: '*'

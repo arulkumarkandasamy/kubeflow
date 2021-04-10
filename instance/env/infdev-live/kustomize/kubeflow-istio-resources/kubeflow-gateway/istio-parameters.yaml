@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  gatewaySelector: ingressgateway
+  hostname: "HOSTNAME" # {"$kpt-set":"hostname"}
+kind: ConfigMap
+metadata:
+  name: istio-parameters

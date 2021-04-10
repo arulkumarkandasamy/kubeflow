@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: application-controller-service
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - application-controller-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-application-controller-service
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: application-controller-service
+  subjects:
+  - user: '*'

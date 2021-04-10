@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+    - port:
+        number: 7777
+        name: tcp
+        protocol: TCP
+      hosts:
+        - $(mysqlDNS)
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - metadata.google.internal
+    - port:
+        number: 443
+        name: tls
+        protocol: TLS
+      hosts:
+        - github.vodafone.com
+        - gstatic.com
+        - "*.googleapis.com"
+        - gcr.io
+        - trusted-beta-apps.neuron.bdp.vodafone.com
+      tls:
+        mode: PASSTHROUGH

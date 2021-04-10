@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kubeflow
+commonLabels:
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+resources:
+- ../../upstream/metacontroller/base
+patchesJson6902:
+- target:
+    group: apps
+    kind: StatefulSet
+    name: metacontroller
+    version: v1
+    namespace: kubeflow
+  patch: |-
+    - op: remove
+      path: "/spec/template/metadata/annotations/sidecar.istio.io~1inject"
+images:
+- name: gcr.io/kubeflow-images-public/admission-webhook
+  newName: gcr.io/kubeflow-images-public/admission-webhook
+  newTag: vmaster-ge5452b6f

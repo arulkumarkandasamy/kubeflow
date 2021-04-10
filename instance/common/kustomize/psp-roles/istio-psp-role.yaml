@@ -1,0 +1,16 @@
+# Role binding which grants access to the app pod security policy
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: istio-psp-role
+  namespace: istio-system
+subjects:
+# For all service accounts in a particular namespace
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+  namespace: istio-system
+roleRef:
+  kind: ClusterRole
+  name: neuron-psp-cluster-role
+  apiGroup: rbac.authorization.k8s.io

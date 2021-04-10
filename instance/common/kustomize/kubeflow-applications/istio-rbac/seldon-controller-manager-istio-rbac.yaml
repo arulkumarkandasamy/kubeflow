@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: seldon-controller-manager
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - seldon-webhook-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-seldon-controller-manager
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: seldon-controller-manager
+  subjects:
+  - user: '*'

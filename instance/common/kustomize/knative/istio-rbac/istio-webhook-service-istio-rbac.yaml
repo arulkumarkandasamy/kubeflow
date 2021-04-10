@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: istio-webhook
+  namespace: knative-serving
+spec:
+  rules:
+  - services:
+    - istio-webhook.knative-serving.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-istio-webhook
+  namespace: knative-serving
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: istio-webhook
+  subjects:
+  - user: '*'

@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: kfserving-webhook-server
+  namespace: kubeflow
+spec:
+  rules:
+    - services:
+        - kfserving-webhook-server-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-kfserving-webhook-server
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: kfserving-webhook-server
+  subjects:
+    - user: '*'

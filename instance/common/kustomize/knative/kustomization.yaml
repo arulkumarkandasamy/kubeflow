@@ -1,0 +1,65 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: knative-serving
+commonLabels:
+  kustomize.component: knative
+  app.kubernetes.io/component: knative-serving-install
+  app.kubernetes.io/name: knative-serving-install
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+resources:
+- ../../upstream/knative/knative-serving-crds/base/crd.yaml
+- ../../upstream/knative/knative-serving-crds/overlays/application
+- ../../upstream/knative/knative-serving-install/base/gateway.yaml
+- ../../upstream/knative/knative-serving-install/base/cluster-role.yaml
+- ../../upstream/knative/knative-serving-install/base/cluster-role-binding.yaml
+- ../../upstream/knative/knative-serving-install/base/service-role.yaml
+- ../../upstream/knative/knative-serving-install/base/service-role-binding.yaml
+- ../../upstream/knative/knative-serving-install/base/config-map.yaml
+- ../../upstream/knative/knative-serving-install/base/deployment.yaml
+- ../../upstream/knative/knative-serving-install/base/service-account.yaml
+- ../../upstream/knative/knative-serving-install/base/secret.yaml
+- ../../upstream/knative/knative-serving-install/base/service.yaml
+- ../../upstream/knative/knative-serving-install/base/image.yaml
+- ../../upstream/knative/knative-serving-install/base/hpa.yaml
+- ../../upstream/knative/knative-serving-install/base/webhook-configuration.yaml
+- ../../upstream/knative/knative-serving-install/overlays/application
+- ./istio-rbac/activator-service-istio-rbac.yaml
+- ./istio-rbac/autoscaler-service-istio-rbac.yaml
+- ./istio-rbac/controller-service-istio-rbac.yaml
+- ./istio-rbac/webhook-service-istio-rbac.yaml
+- ./istio-rbac/istio-webhook-service-istio-rbac.yaml
+patchesStrategicMerge:
+- ./patches/caching-queue-proxy-patch.yaml
+- ./patches/config.yaml
+patchesJson6902:
+- patch: |-
+    - op: remove
+      path: "/spec/template/metadata/annotations/sidecar.istio.io~1inject"
+  target:
+    group: apps
+    kind: Deployment
+    name: networking-istio
+    version: v1
+    namespace: knative-serving
+images:
+# ../../upstream/knative/upstream/knative/installs/generic
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/activator
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/serving/cmd/activator
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/serving/cmd/autoscaler
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/webhook
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/serving/cmd/webhook
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/controller
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/serving/cmd/controller
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/net-istio/cmd/controller
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/net-istio/cmd/controller
+  newTag: v0.14.1
+- name: gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/net-istio/cmd/webhook
+  newTag: v0.14.1

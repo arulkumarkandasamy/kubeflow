@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  kf-name: "infdev-nonlive-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-nonlive" # {"$kpt-set":"project"}
+resources:
+- ../../../../common/kustomize/psp-roles

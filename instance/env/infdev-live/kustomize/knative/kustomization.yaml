@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: knative-serving
+commonLabels:
+  kf-name: "KUBEFLOWNAME" # {"$kpt-set":"kubeflowName"}
+  kf-admin: "KFADMIN" # {"$kpt-set":"kfAdmin"}
+  kf-project: "PROJECT" # {"$kpt-set":"project"}
+resources:
+- ../../../../common/kustomize/knative
+images:
+# ../../upstream/knative/upstream/knative/installs/generic
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/activator
+  #newName: registry.harbor.vodafone.com/vf-neuron/knative-releases/knative.dev/serving/cmd/activator
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler
+  #newName: registry.harbor.vodafone.com/vf-neuron/knative-releases/knative.dev/serving/cmd/autoscaler
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/webhook
+  #newName: registry.harbor.vodafone.com/vf-neuron/knative-releases/knative.dev/serving/cmd/webhook
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/serving/cmd/controller
+  #newName: registry.harbor.vodafone.com/vf-neuron/knative-releases/knative.dev/serving/cmd/controller
+  newTag: v0.14.3
+- name: gcr.io/knative-releases/knative.dev/net-istio/cmd/controller
+  #newName: registry.harbor.vodafone.com/vf-neuron/knative-releases/knative.dev/net-istio/cmd/controller
+  newTag: v0.14.1
+- name: gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook
+  #newName: registry.harbor.vodafone.com/vf-neuron/knative-releases/knative.dev/net-istio/cmd/webhook
+  newTag: v0.14.1

@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metadata-envoy-deployment
+  namespace: kubeflow
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - /etc/envoy.yaml
+        - --base-id 2
+        name: container

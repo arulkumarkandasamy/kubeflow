@@ -1,0 +1,12 @@
+apiVersion: kubeflow.org/v1beta1
+kind: Profile
+metadata:
+  name: sobhan-afroosheh
+spec:
+  owner:
+    kind: User
+    name: sobhan.afroosheh@vodafone.com
+  plugins:
+    - kind: WorkloadIdentity
+      spec:
+        gcpServiceAccount: infdev-nonlive-kf-user-sa@vf-infdev-ca-nonlive.iam.gserviceaccount.com

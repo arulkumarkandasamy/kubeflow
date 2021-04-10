@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubeflow-pipelines-minio-gcs-gateway
+  annotations:
+    iam.gke.io/gcp-service-account: kf-pipeline-minio-client@PROJECT.iam.gserviceaccount.com # {"$kpt-set":"kf-pipeline-minio-client"}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ml-pipeline-ui
+  annotations:
+    iam.gke.io/gcp-service-account: kf-pipeline-client@PROJECT.iam.gserviceaccount.com # {"$kpt-set":"kf-pipeline-client-sa"}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ml-pipeline-visualizationserver
+  annotations:
+    iam.gke.io/gcp-service-account: kf-pipeline-client@PROJECT.iam.gserviceaccount.com # {"$kpt-set":"kf-pipeline-client-sa"}

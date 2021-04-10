@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: istio-system
+commonLabels:
+  app.kubernetes.io/component: kiali
+  app.kubernetes.io/name: kiali
+  kustomize.component: kiali
+resources:
+  - cluster-role.yaml
+  - config-map.yaml
+  - deployment.yaml
+  - secret.yaml
+  - service.yaml
+  - service-account.yaml
+  - viewer-cluster-role.yaml
+images:
+  - name: quay.io/kiali/kiali
+    newName: gcr.io/vf-mc2dev-ca-lab/mirror/kiali/kiali
+    newTag: v1.27 

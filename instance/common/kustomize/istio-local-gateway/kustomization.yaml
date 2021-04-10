@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: istio-system
+commonLabels:
+  app.kubernetes.io/component: cluster-local-gateway
+  app.kubernetes.io/name: cluster-local-gateway
+  kustomize.component: cluster-local-gateway
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+resources:
+- ./cluster-role-binding.yaml
+- ./cluster-role.yaml
+- ./deployment.yaml
+- ./horizontal-pod-autoscaler.yaml
+- ./pod-disruption-budget.yaml
+- ./service-account.yaml
+- ./service.yaml
+images:
+- name: docker.io/istio/proxyv2
+  newName: docker.io/istio/proxyv2
+  newTag: 1.1.6

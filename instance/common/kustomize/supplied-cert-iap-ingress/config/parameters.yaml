@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  hostname: "yourhostname" # {"$kpt-set":"hostname"}
+  ingressName: envoy-ingress
+  ipName: "kf-ip" # {"$kpt-set":"IPName"}
+  oauthSecretName: kubeflow-oauth
+  tlsSecretName: envoy-ingress-tls
+  istioNamespace: istio-system
+kind: ConfigMap
+metadata:
+  name: parameters

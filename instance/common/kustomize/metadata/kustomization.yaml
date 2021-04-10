@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kubeflow
+commonLabels:
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+resources:
+- ../../upstream/metadata/overlays/external-mysql
+- ../../upstream/metadata/overlays/istio/virtual-service-metadata-grpc.yaml
+patchesStrategicMerge:
+- ./config/metadata-db-parameters.yaml
+configurations:
+- ../../upstream/metadata/v3/params.yaml
+secretGenerator:
+- name: metadata-db-secrets
+  envs:
+  - ../../../../secrets/metadata-db-secrets.env
+  behavior: replace
+images:
+- name: gcr.io/kubeflow-images-public/metadata
+  newName: gcr.io/kubeflow-images-public/metadata
+  newTag: v0.1.11
+- name: gcr.io/tfx-oss-public/ml_metadata_store_server
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/tfx-oss-public/ml_metadata_store_server
+  newTag: v0.21.1
+- name: gcr.io/ml-pipeline/envoy
+  newName: gcr.io/ml-pipeline/envoy
+  newTag: metadata-grpc-1.0.1

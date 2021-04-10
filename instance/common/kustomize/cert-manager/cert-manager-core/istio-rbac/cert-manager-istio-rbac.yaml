@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: webhook-service-role
+  namespace: cert-manager
+spec:
+  rules:
+  - services:
+    - cert-manager-webhook.cert-manager.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: webhook-service-role-binding
+  namespace: cert-manager
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: webhook-service-role
+  subjects:
+  - user: '*'

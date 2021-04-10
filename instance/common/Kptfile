@@ -1,0 +1,13 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: kubeflow
+packageMetadata:
+  shortDescription: Kubeflow deployment
+dependencies:
+- name: upstream
+  git:
+    repo: https://github.com/kubeflow/manifests
+    directory: /
+    ref: v1.2.0
+  updateStrategy: fast-forward

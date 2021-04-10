@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/component: cert-manager
+  app.kubernetes.io/name: cert-manager
+  kustomize.component: cert-manager
+  application-crd-id: cert-manager
+resources:
+- ./cert-manager-core/
+- ./cert-manager-crds/
+- ./cert-manager-kube-system/

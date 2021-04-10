@@ -1,0 +1,8 @@
+databaseIP: "DATABASEIP"
+hostname: "HOSTNAME"
+IPName: "kubeflow-ip"
+project: "PROJECT"
+pipelineGCSBucketName: "PROJECT-kf-pipeline-store"
+databasePort: "3306"
+kubeflowName: "KUBEFLOWNAME"
+kfAdmin: "KFADMIN"

@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  kf-name: "infdev-nonlive-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-nonlive" # {"$kpt-set":"project"}
+namespace: istio-system
+patchesStrategicMerge:
+- ./config/parameters.yaml
+- ./patches/service-account-patch.yaml
+resources:
+- ../../../../common/kustomize/supplied-cert-iap-ingress
+images:
+- name: gcr.io/kubeflow-images-public/envoy
+  #newName: registry.harbor.vodafone.com/vf-neuron/kubeflow-images-public/envoy
+  newTag: v20180309-0fb4886b463698702b6a08955045731903a18738
+- name: gcr.io/kubeflow-images-public/ingress-setup
+  #newName: registry.harbor.vodafone.com/vf-neuron/kubeflow-images-public/ingress-setup
+  newTag: latest
+- name: gcr.io/cloud-solutions-group/esp-sample-app
+  #newName: registry.harbor.vodafone.com/vf-neuron/cloud-solutions-group/esp-sample-app
+  newTag: 1.0.0

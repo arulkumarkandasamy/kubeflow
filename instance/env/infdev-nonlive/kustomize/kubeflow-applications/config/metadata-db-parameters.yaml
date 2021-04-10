@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  MYSQL_HOST: "infdev-nonlive-kf-mysql.vf-infdev-ca-nonlive.internal" # {"$kpt-set":"mysqlDNS"}
+  MYSQL_DATABASE: metadb
+  MYSQL_PORT: "3306" # {"$kpt-set":"databasePort"}
+  MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+kind: ConfigMap
+metadata:
+  name: metadata-db-parameters

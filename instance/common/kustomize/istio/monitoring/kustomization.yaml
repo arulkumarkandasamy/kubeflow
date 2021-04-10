@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: istio-system
+commonLabels:
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+resources:
+- ./grafana
+- ./jaeger
+- ./kiali
+- ./prometheus
+- monitoring-gateway.yaml
+- monitoring-vs.yaml
+- ./config/monitoring-config.yaml
+vars:
+- fieldref:
+    fieldPath: data.hostname
+  name: hostname
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: monitoring-config
+configurations:
+- params.yaml

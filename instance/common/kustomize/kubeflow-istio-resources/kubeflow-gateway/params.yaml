@@ -1,0 +1,7 @@
+varReference:
+- path: spec/selector
+  kind: Gateway
+- path: spec/servers/hosts
+  kind: Gateway
+- path: spec/hosts
+  kind: VirtualService

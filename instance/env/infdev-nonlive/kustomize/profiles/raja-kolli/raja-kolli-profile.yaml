@@ -1,0 +1,12 @@
+apiVersion: kubeflow.org/v1beta1
+kind: Profile
+metadata:
+  name: raja-kolli
+spec:
+  owner:
+    kind: User
+    name: raja.kolli@vodafone.com
+  plugins:
+    - kind: WorkloadIdentity
+      spec:
+        gcpServiceAccount: infdev-nonlive-kf-user-sa@vf-infdev-ca-nonlive.iam.gserviceaccount.com

@@ -1,0 +1,12 @@
+apiVersion: kubeflow.org/v1beta1
+kind: Profile
+metadata:
+  name: connor-wilkes
+spec:
+  owner:
+    kind: User
+    name: connor.wilkes@vodafone.com
+  plugins:
+    - kind: WorkloadIdentity
+      spec:
+        gcpServiceAccount: kf-test@vf-infdev-ca-lab.iam.gserviceaccount.com

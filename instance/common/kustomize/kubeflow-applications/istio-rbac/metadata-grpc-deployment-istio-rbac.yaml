@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: metadata-grpc-deployment
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - metadata-grpc-service.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-metadata-grpc-deployment
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: metadata-grpc-deployment
+  subjects:
+  - user: '*'

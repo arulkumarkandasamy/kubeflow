@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/component: cert-manager
+  app.kubernetes.io/name: cert-manager
+  kustomize.component: cert-manager
+  application-crd-id: cert-manager
+namespace: cert-manager
+resources:
+- ./v3
+- ./istio-rbac/cert-manager-istio-rbac.yaml
+- ./istio-rbac/webhook-istio-rbac.yaml
+configurations:
+- ./overlays/application/params.yaml
+images:
+- name: quay.io/jetstack/cert-manager-controller
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/quay.io/jetstack/cert-manager-controller
+  newTag: v0.11.0
+- name: quay.io/jetstack/cert-manager-webhook
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/quay.io/jetstack/cert-manager-webhook
+  newTag: v0.11.0
+- name: quay.io/jetstack/cert-manager-cainjector
+  newName: gcr.io/vf-mc2dev-ca-lab/mirror/quay.io/jetstack/cert-manager-cainjector
+  newTag: v0.11.0

@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kubeflow
+patchesJson6902:
+- patch: |-
+    - op: remove
+      path: "/spec/template/metadata/annotations/sidecar.istio.io~1inject"
+  target:
+    group: apps
+    kind: StatefulSet
+    name: application-controller-stateful-set
+    version: v1
+    namespace: kubeflow
+resources:
+- ../../upstream/application/v3
+- ./istio-rbac/application-controller-service-istio-rbac.yaml
+images:
+  - name: gcr.io/kubeflow-images-public/kubernetes-sigs/application
+    newName: gcr.io/kubeflow-images-public/kubernetes-sigs/application
+    newTag: 1.0-beta

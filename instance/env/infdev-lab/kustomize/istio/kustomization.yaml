@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: istio-system
+commonLabels:
+  kf-name: "infdev-lab-kf" # {"$kpt-set":"kubeflowName"}
+  kf-admin: connor.wilkes # {"$kpt-set":"kfAdmin"}
+  kf-project: "vf-infdev-ca-lab" # {"$kpt-set":"project"}
+patchesStrategicMerge:
+- ./config/mysql-params.yaml
+- ./monitoring/config/monitoring-config.yaml
+- ./patches/service-account-patch.yaml
+- ./patches/istio-sidecar-configmap-patch.yaml
+resources:
+- ../../../../common/kustomize/istio
+images:
+- name: docker.io/istio/proxyv2
+  newName: registry.harbor.vodafone.com/vf-neuron/proxyv2
+  newTag: 1.5.10-distroless
+- name: docker.io/istio/pilot:1.5.10-distroless
+  newName: registry.harbor.vodafone.com/vf-neuron/pilot
+  newTag: 1.5.10-distroless
+- name: docker.io/prom/prometheus
+  newName: registry.harbor.vodafone.com/vf-neuron/prometheus
+  newTag: v2.15.1
+- name: gcr.io/vf-mc2dev-ca-lab/mirror/kiali/kiali
+  newName: registry.harbor.vodafone.com/vf-neuron/kiali/kiali
+  newTag: v1.28
+- name: docker.io/jaegertracing/all-in-one
+  newName: registry.harbor.vodafone.com/vf-neuron/all-in-one
+  newTag: '1.16'
+- name: grafana/grafana:6.7.4
+  newName: registry.harbor.vodafone.com/vf-neuron/grafana
+  newTag: 6.7.4

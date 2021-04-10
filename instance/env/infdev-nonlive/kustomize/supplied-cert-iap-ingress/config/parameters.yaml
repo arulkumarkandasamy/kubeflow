@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  hostname: "infdev-nonlive.aa.vodafone.com" # {"$kpt-set":"hostname"}
+  ingressName: envoy-ingress
+  ipName: "kubeflow-ip" # {"$kpt-set":"IPName"}
+  oauthSecretName: kubeflow-oauth
+  tlsSecretName: envoy-ingress-tls
+  istioNamespace: istio-system
+kind: ConfigMap
+metadata:
+  name: parameters

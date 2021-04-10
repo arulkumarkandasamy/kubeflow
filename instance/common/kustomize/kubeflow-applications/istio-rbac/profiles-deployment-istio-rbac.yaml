@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: profiles-deployment
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - profiles-kfam.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-profiles-deployment
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: profiles-deployment
+  subjects:
+  - user: '*'

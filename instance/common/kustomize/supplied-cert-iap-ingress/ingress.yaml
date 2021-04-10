@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: "false" 
+    kubernetes.io/ingress.global-static-ip-name: $(ipName)
+  name: envoy-ingress
+spec:
+  backend:
+    serviceName: istio-ingressgateway
+    servicePort: 80
+  rules:
+  - host: "*.$(hostname)"
+    http:
+      paths:
+      - backend:
+          serviceName: istio-ingressgateway
+          servicePort: 80
+        path: /*
+  tls:
+    - secretName: "$(tlsSecretName)"
+      hosts:
+        - "*.$(hostname)"
+

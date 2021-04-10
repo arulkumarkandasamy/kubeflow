@@ -1,0 +1,99 @@
+apiVersion: v1
+data:
+  credentials: |-
+    {
+       "gcs": {
+           "gcsCredentialFileName": "gcloud-application-credentials.json"
+       },
+       "s3": {
+           "s3AccessKeyIDName": "awsAccessKeyID",
+           "s3SecretAccessKeyName": "awsSecretAccessKey"
+       }
+    }
+  explainers: |-
+    {
+        "alibi": {
+            "image" : "docker.io/seldonio/kfserving-alibiexplainer",
+            "defaultImageVersion": "v0.3.0",
+            "allowedImageVersions": [
+               "v0.3.0"
+            ]
+        }
+    }
+  ingress: |-
+    {
+        "ingressGateway" : "kubeflow-gateway.kubeflow",
+        "ingressService" : "istio-ingressgateway.istio-system.svc.cluster.local"
+    }
+  logger: |-
+    {
+        "image" : "registry.harbor.vodafone.com/vf-neuron/kfserving/logger:v0.4.1",
+        "memoryRequest": "100Mi",
+        "memoryLimit": "1Gi",
+        "cpuRequest": "100m",
+        "cpuLimit": "1"
+    }
+  predictors: |-
+    {
+        "tensorflow": {
+            "image": "tensorflow/serving",
+            "defaultImageVersion": "1.14.0",
+            "defaultGpuImageVersion": "1.14.0-gpu",
+            "allowedImageVersions": [
+               "1.14.0",
+               "1.14.0-gpu"
+            ]
+        },
+        "onnx": {
+            "image": "registry.harbor.vodafone.com/vf-neuron/onnxruntime/server",
+            "defaultImageVersion": "v1.0.0",
+            "allowedImageVersions": [
+               "v1.0.0"
+            ]
+        },
+        "sklearn": {
+            "image": "gcr.io/vf-mc2dev-ca-lab/mirror/kfserving/sklearnserver",
+            "defaultImageVersion": "v0.3.0",
+            "allowedImageVersions": [
+               "v0.3.0"
+            ]
+        },
+        "xgboost": {
+            "image": "gcr.io/vf-mc2dev-ca-lab/mirror/kfserving/xgbserver",
+            "defaultImageVersion": "v0.3.0",
+            "allowedImageVersions": [
+               "v0.3.0"
+            ]
+        },
+        "pytorch": {
+            "image": "gcr.io/kfserving/pytorchserver",
+            "defaultImageVersion": "v0.3.0",
+            "defaultGpuImageVersion": "v0.3.0-gpu",
+            "allowedImageVersions": [
+               "v0.3.0",
+               "v0.3.0-gpu"
+            ]
+        },
+        "tensorrt": {
+            "image": "nvcr.io/nvidia/tensorrtserver",
+            "defaultImageVersion": "19.05-py3",
+            "allowedImageVersions": [
+               "19.05-py3"
+            ]
+        }
+    }
+  storageInitializer: |-
+    {
+        "image" : "gcr.io/vf-mc2dev-ca-lab/mirror/kfserving/storage-initializer:v0.3.0",
+        "memoryRequest": "100Mi",
+        "memoryLimit": "1Gi",
+        "cpuRequest": "100m",
+        "cpuLimit": "1"
+    }
+  transformers: |-
+    {
+    }
+kind: ConfigMap
+metadata:
+  name: inferenceservice-config
+  namespace: kubeflow

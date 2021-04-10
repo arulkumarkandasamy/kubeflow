@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kubeflow
+commonLabels:
+  kf-name: "KUBEFLOWNAME" # {"$kpt-set":"kubeflowName"}
+  kf-admin: "KFADMIN" # {"$kpt-set":"kfAdmin"}
+  kf-project: "PROJECT" # {"$kpt-set":"project"}
+resources:
+- ../../../../common/kustomize/application
+images:
+- name: gcr.io/kubeflow-images-public/kubernetes-sigs/application
+  #    newName: registry.harbor.vodafone.com/vf-neuron/kubeflow-images-public/kubernetes-sigs/application
+  newTag: 1.0-beta

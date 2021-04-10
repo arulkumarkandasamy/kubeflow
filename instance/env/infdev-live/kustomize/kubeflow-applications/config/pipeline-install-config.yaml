@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  appName: kubeflow-pipelines
+  bucketName: "PROJECT-kf-pipeline-store" # {"$kpt-set":"pipelineGCSBucketName"}
+  gcsProjectId: "PROJECT" # {"$kpt-set":"project"}
+  pipelineDb: pipelinedb
+  mlmdDb: metadb
+  cacheDb: cachedb
+  dbHost: "KUBEFLOWNAME-mysql.PROJECT.internal" # {"$kpt-set":"mysqlDNS"}
+kind: ConfigMap
+metadata:
+  name: pipeline-install-config

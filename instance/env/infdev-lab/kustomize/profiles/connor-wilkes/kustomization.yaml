@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/component: profiles
+  app.kubernetes.io/name: profiles
+  kustomize.component: profiles
+namespace: connor-wilkes
+resources:
+- ./connor-wilkes-profile.yaml
+- ./psp.yaml
+- ./service-account.yaml

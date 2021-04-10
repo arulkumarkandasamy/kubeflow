@@ -1,0 +1,64 @@
+# https://istio.io/v1.5/blog/2018/egress-mongo
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway-for-mysql
+spec:
+  host: istio-egressgateway.istio-system.svc.cluster.local
+  subsets:
+  - name: mysql
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: mysql
+spec:
+  host: $(mysqlDNS)
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: direct-mysql-through-egress-gateway
+spec:
+  hosts:
+  - $(mysqlDNS)
+  gateways:
+  - mesh
+  - istio-system/istio-egressgateway
+  tcp:
+  - match:
+    - gateways:
+      - mesh
+      port: 3306
+    route:
+    - destination:
+        host: istio-egressgateway.istio-system.svc.cluster.local
+        subset: mysql
+        port:
+          number: 7777
+  - match:
+    - gateways:
+      - istio-system/istio-egressgateway
+      port: 7777
+    route:
+    - destination:
+        host: $(mysqlDNS)
+        port:
+          number: 3306
+      weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: mysql
+spec:
+  hosts:
+  - $(mysqlDNS)
+  endpoints:
+  - address: $(mysqlDNS)
+  location: MESH_EXTERNAL
+  ports:
+  - number: 3306
+    name: tcp
+    protocol: tcp
+  resolution: DNS

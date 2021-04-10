@@ -1,0 +1,10 @@
+---
+apiVersion: caching.internal.knative.dev/v1alpha1
+kind: Image
+metadata:
+  labels:
+    serving.knative.dev/release: v0.14.3
+  name: queue-proxy
+  namespace: knative-serving
+spec:
+  image: 'gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/serving/cmd/queue:v0.11.2' # TODO Not in Harbor

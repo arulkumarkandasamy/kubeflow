@@ -1,0 +1,23 @@
+varReference:
+- path: spec/tcp/match/port
+  kind: VirtualService
+- path: spec/hosts
+  kind: VirtualService
+- path: spec/tcp/route/destination/host
+  kind: VirtualService
+- path: spec/tcp/match/destinationSubnets
+  kind: VirtualService
+- path: spec/tcp/route/destination/port/number
+  kind: VirtualService
+- path: spec/ports/number
+  kind: ServiceEntry
+- path: spec/servers/port/number
+  kind: Gateway
+- path: spec/addresses
+  kind: ServiceEntry
+- path: spec/endpoints/address
+  kind: ServiceEntry
+- path: spec/hosts
+  kind: ServiceEntry
+- path: spec/host
+  kind: DestinationRule

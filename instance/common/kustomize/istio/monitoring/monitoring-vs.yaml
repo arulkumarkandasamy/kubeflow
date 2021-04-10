@@ -1,0 +1,53 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: monitoring-vs
+  namespace: istio-system
+spec:
+  gateways:
+    - istio-system/monitoring-gateway
+  hosts:
+    - "monitoring.$(hostname)"
+  http:
+    - match:
+        - uri:
+            prefix: "/kiali"
+          method:
+            exact: GET
+      route:
+        - destination:
+            host: "kiali.istio-system.svc.cluster.local"
+            port:
+              number: 20001
+    - match:
+        - uri:
+            prefix: "/grafana"
+          method:
+            exact: "GET"
+      route:
+        - destination:
+            host: "grafana.istio-system.svc.cluster.local"
+            port:
+              number: 3000
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: kiali
+#  namespace: istio-system
+#spec:
+#  host: kiali
+#  trafficPolicy:
+#    tls:
+#      mode: DISABLE
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: grafana
+#  namespace: istio-system
+#spec:
+#  host: grafana
+#  trafficPolicy:
+#    tls:
+#      mode: DISABLE

@@ -1,0 +1,61 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway-for-shared-services
+  namespace: istio-system
+spec:
+  host: istio-egressgateway.istio-system.svc.cluster.local
+  subsets:
+    - name: shared-services-entry
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: egressgateway-for-shared-services
+  namespace: istio-system
+spec:
+  gateways:
+    - mesh
+    - istio-system/istio-egressgateway
+  hosts:
+    - "trusted-beta-apps.neuron.bdp.vodafone.com"
+  tls:
+    - match:
+        - gateways:
+            - mesh
+          port: 443
+          sniHosts:
+            - "trusted-beta-apps.neuron.bdp.vodafone.com"
+      route:
+        - destination:
+            host: istio-egressgateway.istio-system.svc.cluster.local
+            subset: shared-services-entry
+            port:
+              number: 443
+    - match:
+        - gateways:
+            - istio-system/istio-egressgateway
+          port: 443
+          sniHosts:
+            - "trusted-beta-apps.neuron.bdp.vodafone.com"
+      route:
+        - destination:
+            host: "trusted-beta-apps.neuron.bdp.vodafone.com"
+            port:
+              number: 443
+          weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: shared-services-egress
+  namespace: istio-system
+spec:
+  hosts:
+    - trusted-beta-apps.neuron.bdp.vodafone.com
+  ports:
+    - number: 443
+      name: tls
+      protocol: TLS
+  resolution: DNS
+  location: MESH_EXTERNAL

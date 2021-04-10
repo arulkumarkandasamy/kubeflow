@@ -1,0 +1,13 @@
+apiVersion: "serving.kubeflow.org/v1alpha2"
+kind: "InferenceService"
+metadata:
+  name: "sklearn-iris"
+  annotations:
+    sidecar.istio.io/inject: "false"
+spec:
+  default:
+    predictor:
+      serviceAccountName: default-editor
+      sklearn:
+        storageUri: gs://vf-infdev-ca-lab-kf-model-store/connor-wilkes/iris
+        runtimeVersion: "v0.3.0"

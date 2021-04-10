@@ -1,0 +1,21 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: kubeflow-pipelines-profile-controller
+  namespace: kubeflow
+spec:
+  rules:
+  - services:
+    - kubeflow-pipelines-profile-controller.kubeflow.svc.cluster.local
+---
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: bind-kubeflow-pipelines-profile-controller
+  namespace: kubeflow
+spec:
+  roleRef:
+    kind: ServiceRole
+    name: kubeflow-pipelines-profile-controller
+  subjects:
+  - user: '*'

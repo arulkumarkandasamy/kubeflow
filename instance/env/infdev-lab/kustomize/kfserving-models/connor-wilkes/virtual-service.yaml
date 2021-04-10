@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kfserving-connor-wilkes-sklearn-iris-vs
+spec:
+  gateways:
+    - kubeflow/kubeflow-gateway
+  hosts:
+    - '*'
+  http:
+    - match:
+        - uri:
+            prefix: /kfserving/connor-wilkes/sklearn-iris
+      rewrite:
+        uri: /v1/models/sklearn-iris
+      route:
+        - destination:
+            host: cluster-local-gateway.istio-system.svc.cluster.local
+          headers:
+            request:
+              set:
+                Host: sklearn-iris-predictor-default.connor-wilkes.svc.cluster.local
+          weight: 100
+      timeout: 300s

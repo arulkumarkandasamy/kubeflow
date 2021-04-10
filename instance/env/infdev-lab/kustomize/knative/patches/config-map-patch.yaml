@@ -1,0 +1,30 @@
+
+---
+apiVersion: v1
+data:
+  _example: |
+    ################################
+    #                              #
+    #    EXAMPLE CONFIGURATION     #
+    #                              #
+    ################################
+
+    # This block is not actually functional configuration,
+    # but serves to illustrate the available configuration
+    # options and document them in a way that is accessible
+    # to users that `kubectl edit` this config map.
+    #
+    # These sample configuration options may be copied out of
+    # this example block and unindented to be in the data block
+    # to actually change the configuration.
+
+    # List of repositories for which tag to digest resolving should be skipped
+    registriesSkippingTagResolving: "ko.local,dev.local"
+  queueSidecarImage: 'gcr.io/vf-mc2dev-ca-lab/mirror/knative-releases/knative.dev/serving/cmd/queue:v0.11.2' # TODO Not in Harbor
+kind: ConfigMap
+metadata:
+  labels:
+    serving.knative.dev/release: v0.14.3
+  name: config-deployment
+  namespace: knative-serving
+

@@ -1,0 +1,12 @@
+apiVersion: kubeflow.org/v1beta1
+kind: Profile
+metadata:
+  name: ashish-vijayvargia
+spec:
+  owner:
+    kind: User
+    name: ashish.vijayvargia@vodafone.com
+  plugins:
+    - kind: WorkloadIdentity
+      spec:
+        gcpServiceAccount: infdev-nonlive-kf-user-sa@vf-infdev-ca-nonlive.iam.gserviceaccount.com

@@ -1,0 +1,6 @@
+apiVersion: v1
+data:
+  mysqlDNS: "sqlDNS"
+kind: ConfigMap
+metadata:
+  name: mysql-params

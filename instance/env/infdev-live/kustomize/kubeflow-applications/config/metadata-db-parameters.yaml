@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  MYSQL_HOST: "KUBEFLOWNAME-mysql.PROJECT.internal" # {"$kpt-set":"mysqlDNS"}
+  MYSQL_DATABASE: metadb
+  MYSQL_PORT: "PORT" # {"$kpt-set":"databasePort"} #Probably 3306
+  MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+kind: ConfigMap
+metadata:
+  name: metadata-db-parameters

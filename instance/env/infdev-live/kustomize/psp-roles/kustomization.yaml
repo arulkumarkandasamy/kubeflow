@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  kf-name: "KUBEFLOWNAME" # {"$kpt-set":"kubeflowName"}
+  kf-admin: "KFADMIN" # {"$kpt-set":"kfAdmin"}
+  kf-project: "PROJECT" # {"$kpt-set":"project"}
+resources:
+- ../../../../common/kustomize/psp-roles
